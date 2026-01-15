@@ -41,10 +41,9 @@ class EmailChecker(JobBase.JobBase):
         M = imaplib.IMAP4_SSL(self.config.get("email", "imapserver"))
         M.login(USER, PASS)
 
-        # If we have set up a filter to auto-delete messages from ourself
-        if self.config.getboolean("email", "ideletesentmessagesautomatically"):
-            logdetails += "Switching to trash\n"
-            M.select("[Gmail]/Trash")
+        mailbox = self.config.get("email", "imapmailbox")
+        logdetails += f"Switching to {mailbox}\n"
+        M.select(mailbox)
 
         criteria = (
             '(FROM "'
