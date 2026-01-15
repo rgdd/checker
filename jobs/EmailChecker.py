@@ -5,6 +5,7 @@ import os
 import base64
 import datetime
 import logging
+import time
 
 import imaplib
 
@@ -37,6 +38,11 @@ class EmailChecker(JobBase.JobBase):
 
         if not self.sendEmail(subj, "", USER):
             return False
+
+        if self.config.has_option("email", "imapwait"):
+            wait = self.config.getint("email", "imapwait")
+            logdetails += f"Waiting {wait}s before imap login"
+            time.sleep(wait)
 
         M = imaplib.IMAP4_SSL(self.config.get("email", "imapserver"))
         M.login(USER, PASS)

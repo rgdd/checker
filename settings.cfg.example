@@ -17,6 +17,8 @@ imapserver=imap.gmail.com
 #avoids an inbox that grows continuously without any upper bound.  Note that
 #setting up a deletion filter is done with your email provider, not checker.
 imapmailbox=[Gmail]/Trash
+#Make checker wait 5s before reading emails from self in mailbox (optional)
+#imapwait=5
 #If set, append a random number to prevent gmail threading
 bustgmailthreading=False
 
