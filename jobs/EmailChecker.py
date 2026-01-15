@@ -29,6 +29,7 @@ class EmailChecker(JobBase.JobBase):
 
         USER = self.config.get("email", "user")
         PASS = self.config.get("email", "pass")
+        FROM = self.config.get("email", "from", fallback=USER)
 
         logdetails = ""
 
@@ -36,7 +37,7 @@ class EmailChecker(JobBase.JobBase):
         subj = base64.b64encode(os.urandom(20)).decode("utf-8")
         logdetails += "Target subject is " + subj + "\n\n"
 
-        if not self.sendEmail(subj, "", USER):
+        if not self.sendEmail(subj, "", FROM):
             return False
 
         if self.config.has_option("email", "imapwait"):
@@ -53,7 +54,7 @@ class EmailChecker(JobBase.JobBase):
 
         criteria = (
             '(FROM "'
-            + USER
+            + FROM
             + '" SINCE "'
             + (datetime.date.today() - datetime.timedelta(hours=24)).strftime(
                 "%d-%b-%Y"
